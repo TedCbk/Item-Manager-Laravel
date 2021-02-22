@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use Illuminate\Http\Request;
 
 class ItemsController extends Controller
@@ -13,7 +14,9 @@ class ItemsController extends Controller
      */
     public function index()
     {
-        //
+        // Grab all the items, than transformed it into a json object that we can use on insomnia or postman
+        $items = Item::all();
+        return response()->json($items);
     }
 
     /**
@@ -45,7 +48,9 @@ class ItemsController extends Controller
      */
     public function show($id)
     {
-        //
+        // Get a single Item and returning a json object
+        $item = Item::find($id);
+        return response()->json($item);
     }
 
     /**
