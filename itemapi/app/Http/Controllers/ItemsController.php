@@ -89,7 +89,23 @@ class ItemsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // We can't send a PUT request via Insomnia, but we can add on a POST request a field _method -> PUT
+        $validator = Validator::make($request->all(), [
+            'text' => 'required',
+        ]); 
+        
+        if($validator->fails()){
+            $response = array('response' => $validator->messages(), 'success' => false);
+            return $response;
+        } else {
+          //   Find Item
+          $item = Item::find($id);
+          $item->text = $request->input('text');
+          $item->body = $request->input('body');
+          $item->save();
+  
+          return response()->json($item);
+        } 
     }
 
     /**
@@ -100,6 +116,12 @@ class ItemsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // We can't send a DELETE request via Insomnia, but we can add on a POST request a field _method -> DELETE
+        //   Find Item
+        $item = Item::find($id);
+        $item->delete();
+
+        $response = array('response' => 'Item Deleted', 'success' => true);
+            return $response;  
     }
 }
